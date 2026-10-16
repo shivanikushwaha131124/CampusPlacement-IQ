@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusPlacement-IQ - College TPO Placement Analytics Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
+        .glass-card { background: rgba(18, 24, 38, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .gradient-text { background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="p-6 md:p-10 min-h-screen">
+    <div class="max-w-7xl mx-auto space-y-8">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-800">
+            <div>
+                <div class="flex items-center gap-3">
+                    <span class="px-3 py-1 text-xs font-semibold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full">College TPO Cell</span>
+                    <span class="text-xs text-gray-400">Power BI Model Preview</span>
+                </div>
+                <h1 class="text-3xl font-extrabold tracking-tight mt-2">
+                    🎓 CampusPlacement<span class="gradient-text">-IQ</span> Analytics Dashboard
+                </h1>
+                <p class="text-sm text-gray-400 mt-1">Institutional Student Placement Prediction & Salary Package (LPA) Career Analytics</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    10,000 Verified Student Profiles
+                </span>
+            </div>
+        </div>
+
+        <!-- KPI Cards Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="glass-card rounded-2xl p-5 border-l-4 border-blue-500">
+                <p class="text-xs font-medium uppercase tracking-wider text-gray-400">Total Student Batch</p>
+                <h3 class="text-2xl font-bold text-white mt-1">10,000</h3>
+                <p class="text-xs text-blue-400 mt-2 font-medium">MCA, B.Tech, BCA</p>
+            </div>
+            <div class="glass-card rounded-2xl p-5 border-l-4 border-emerald-500">
+                <p class="text-xs font-medium uppercase tracking-wider text-gray-400">Overall Placement Rate</p>
+                <h3 class="text-2xl font-bold text-emerald-400 mt-1">66.45%</h3>
+                <p class="text-xs text-emerald-300 mt-2 font-medium">6,645 Students Placed</p>
+            </div>
+            <div class="glass-card rounded-2xl p-5 border-l-4 border-purple-500">
+                <p class="text-xs font-medium uppercase tracking-wider text-gray-400">Average Salary (CTC)</p>
+                <h3 class="text-2xl font-bold text-purple-400 mt-1">₹10.08 LPA</h3>
+                <p class="text-xs text-gray-400 mt-2 font-medium">Placed Student Cohort</p>
+            </div>
+            <div class="glass-card rounded-2xl p-5 border-l-4 border-amber-500">
+                <p class="text-xs font-medium uppercase tracking-wider text-gray-400">Highest Offer</p>
+                <h3 class="text-2xl font-bold text-amber-400 mt-1">₹20.63 LPA</h3>
+                <p class="text-xs text-amber-300 mt-2 font-medium">Dream Product Offer</p>
+            </div>
+            <div class="glass-card rounded-2xl p-5 border-l-4 border-rose-500">
+                <p class="text-xs font-medium uppercase tracking-wider text-gray-400">At-Risk Students</p>
+                <h3 class="text-2xl font-bold text-rose-400 mt-1">1,854</h3>
+                <p class="text-xs text-rose-300 mt-2 font-medium">Need Remedial Upskilling</p>
+            </div>
+        </div>
+
+        <!-- Charts Grid 1 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Readiness Tiers Donut -->
+            <div class="glass-card rounded-2xl p-6">
+                <h3 class="text-base font-semibold text-white mb-4">Student Career Readiness Tiers</h3>
+                <div class="h-64 flex items-center justify-center">
+                    <canvas id="readinessDonutChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Average CTC by Branch -->
+            <div class="glass-card rounded-2xl p-6 lg:col-span-2">
+                <h3 class="text-base font-semibold text-white mb-4">Average Salary Package (INR LPA) Across Degrees</h3>
+                <div class="h-64">
+                    <canvas id="branchBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Grid 2 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Backlogs Penalty Chart -->
+            <div class="glass-card rounded-2xl p-6">
+                <h3 class="text-base font-semibold text-white mb-4">Impact of Active Backlogs on Placement %</h3>
+                <div class="h-64">
+                    <canvas id="backlogChart"></canvas>
+                </div>
+            </div>
+
+            <!-- TPO Action Plan -->
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-base font-semibold text-white mb-3">🎓 Institutional Placement Intervention Plan</h3>
+                    <ul class="space-y-3 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-400 font-bold">✓</span>
+                            <span><strong>Zero-Backlog Advantage:</strong> Students with 0 backlogs exhibit a <strong>73.8%</strong> placement rate vs only <strong>27.7%</strong> with 2+ backlogs.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-blue-400 font-bold">⚡</span>
+                            <span><strong>DSA & Technical Leverage:</strong> Coding scores > 75 directly unlock average packages of ₹12+ LPA regardless of branch.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-purple-400 font-bold">🎯</span>
+                            <span><strong>Internship Multiplier:</strong> Even 1 verified technical internship increases placement probability by <strong>24%</strong>.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="pt-4 mt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                    <span>Model: Dual Random Forest Engine</span>
+                    <span>Classifier Recall: 91.4% | Salary R2: 0.852</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Chart.js Scripts -->
+    <script>
+        // 1. Readiness Donut
+        const ctxReadiness = document.getElementById('readinessDonutChart').getContext('2d');
+        new Chart(ctxReadiness, {
+            type: 'doughnut',
+            data: {
+                labels: ['Tier-2 Service IT (4-9 LPA)', 'Tier-1 Dream (10+ LPA)', 'At-Risk (Intervention)'],
+                datasets: [{
+                    data: [5132, 3014, 1854],
+                    backgroundColor: ['#6366f1', '#10b981', '#ef4444'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#94a3b8', boxWidth: 12 } }
+                }
+            }
+        });
+
+        // 2. Branch Bar
+        const ctxBranch = document.getElementById('branchBarChart').getContext('2d');
+        new Chart(ctxBranch, {
+            type: 'bar',
+            data: {
+                labels: ['MCA', 'B.Tech CSE', 'B.Tech IT', 'B.Tech ECE', 'BCA'],
+                datasets: [{
+                    label: 'Avg CTC (LPA)',
+                    data: [10.21, 9.97, 10.05, 10.37, 9.85],
+                    backgroundColor: '#3b82f6',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
+                    y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        // 3. Backlog Bar
+        const ctxBacklog = document.getElementById('backlogChart').getContext('2d');
+        new Chart(ctxBacklog, {
+            type: 'bar',
+            data: {
+                labels: ['0 Backlogs', '1 Backlog', '2 Backlogs', '3+ Backlogs'],
+                datasets: [{
+                    label: 'Placement %',
+                    data: [73.8, 50.6, 27.7, 25.4],
+                    backgroundColor: ['#10b981', '#f59e0b', '#ef4444', '#b91c1c'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
+                    y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+    </script>
+</body>
+</html>
